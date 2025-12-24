@@ -11,22 +11,54 @@ import React, { useState } from 'react';
 const Create = ({ data, setData }) => {
   const [itemName, setItemName] = useState('');
   const [stockQty, setStockQty] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
 
+  // Add or update item
   const addItemHandler = () => {
     if (!itemName || !stockQty) return;
-    const newItem = {
-      id: Date.now(),
-      name: itemName,
-      stock: parseInt(stockQty),
-    };
-    setData([...data, newItem]);
+
+    if (isEdit) {
+      // Update existing item
+      setData(
+        data.map(item =>
+          item.id === editId
+            ? { ...item, name: itemName, stock: parseInt(stockQty) }
+            : item,
+        ),
+      );
+    } else {
+      // Add new item
+      const newItem = {
+        id: Date.now(),
+        name: itemName,
+        stock: parseInt(stockQty),
+      };
+      setData([...data, newItem]);
+    }
+
     setItemName('');
     setStockQty('');
+    setIsEdit(false);
+    setEditId(null);
+  };
+
+  // Delete item
+  const deleteItemHandler = id => {
+    setData(data.filter(item => item.id !== id));
+  };
+
+  // Edit item
+  const editItemHandler = item => {
+    setIsEdit(true);
+    setEditId(item.id);
+    setItemName(item.name);
+    setStockQty(item.stock.toString());
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Add New Item</Text>
+      <Text style={styles.title}>{isEdit ? 'Edit Item' : 'Add New Item'}</Text>
 
       <TextInput
         placeholder="Enter item name"
@@ -46,7 +78,9 @@ const Create = ({ data, setData }) => {
       />
 
       <Pressable style={styles.button} onPress={addItemHandler}>
-        <Text style={styles.buttonText}>Add Item</Text>
+        <Text style={styles.buttonText}>
+          {isEdit ? 'Update Item' : 'Add Item'}
+        </Text>
       </Pressable>
 
       <Text style={styles.headingText}>All Items in Stock</Text>
@@ -74,10 +108,10 @@ const Create = ({ data, setData }) => {
                 >
                   {item.stock}
                 </Text>
-                <Pressable>
+                <Pressable onPress={() => editItemHandler(item)}>
                   <Text style={styles.editText}>Edit</Text>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => deleteItemHandler(item.id)}>
                   <Text
                     style={[
                       styles.deleteText,
@@ -103,6 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 15,
+    backgroundColor: '#FAFAFA',
   },
   title: {
     fontSize: 22,
@@ -159,6 +194,7 @@ const styles = StyleSheet.create({
   actionsContainer: {
     flexDirection: 'row',
     gap: 20,
+    alignItems: 'center',
   },
   editText: {
     color: '#1976D2',
