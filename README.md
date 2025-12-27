@@ -5,6 +5,14 @@ This app helps track items, monitor low stock, and manage inventory with add, ed
 
 This project was created as a **first React Native app** to practice core concepts like state management, conditional rendering, and list handling.
 
+## 📱 App Screenshots
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4ebb47f3-698c-4c08-88e2-e2b622b6cf08" width="300" alt="Edit Item Screen" />
+  <img src="https://github.com/user-attachments/assets/99f2f1cf-ddca-4e0d-933c-f363c44c7761" width="300" alt="Add Item Screen" />
+  <img src="https://github.com/user-attachments/assets/a50dc9e4-7e2d-48f6-b061-5a74221fce99" width="300" alt="Home Screen" />
+</p>
+
 ---
 
 ## ✨ Features
